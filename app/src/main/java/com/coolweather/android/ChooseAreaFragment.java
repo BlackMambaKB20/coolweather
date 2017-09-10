@@ -1,8 +1,10 @@
 package com.coolweather.android;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,7 +83,7 @@ public class ChooseAreaFragment extends Fragment {
      */
     private int currentLevel;
 
-
+    //创建Fragment的视图
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -94,6 +96,7 @@ public class ChooseAreaFragment extends Fragment {
         return view;
     }
 
+    //当Activity的onCreate方法返回时调用
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -106,6 +109,14 @@ public class ChooseAreaFragment extends Fragment {
                 } else if (currentLevel == LEVEL_CITY) {
                     selectedCity = cityList.get(position);
                     queryCounties();
+                } else if (currentLevel == LEVEL_COUNTY) {
+                    String weatherId = countyList.get(position).getWeatherId();
+                    Log.d(TAG, "onItemClick: "+(countyList.size()));
+                    Log.d(TAG, "requestWeather: --"+weatherId);
+                    Intent intent = new Intent(getActivity(), WeatherActivity.class);
+                    intent.putExtra("weather_id", weatherId);
+                    startActivity(intent);
+                    getActivity().finish();
                 }
             }
         });
@@ -178,6 +189,8 @@ public class ChooseAreaFragment extends Fragment {
             dataList.clear();
             for (County county : countyList) {
                 dataList.add(county.getCountyName());
+                Log.d(TAG, "queryCounties: "+county.getCountyName());
+                Log.d(TAG, "queryCounties: "+county.getWeatherId());
             }
             adapter.notifyDataSetChanged();
             listView.setSelection(0);
