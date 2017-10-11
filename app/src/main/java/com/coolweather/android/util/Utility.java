@@ -16,6 +16,7 @@ public class Utility {
 
     /**
      * 解析和处理服务器返回的省级数据
+     * ？？？
      */
     public static boolean handleProvinceResponse(String response) {
         if (!TextUtils.isEmpty(response)) {
@@ -26,7 +27,7 @@ public class Utility {
                     Province province = new Province();
                     province.setProvinceName(provinceObject.getString("name"));
                     province.setProvinceCode(provinceObject.getInt("id"));
-                    province.save();
+                    province.save();//LitePal的用法   存储在数据库中
                 }
                 return true;
             } catch (JSONException e) {
@@ -38,6 +39,7 @@ public class Utility {
 
     /**
      * 解析和处理服务器返回的市级数据
+     * ？？？
      */
     public static boolean handleCityResponse(String response, int provinceId) {
         if (!TextUtils.isEmpty(response)) {
@@ -61,6 +63,7 @@ public class Utility {
 
     /**
      * 解析和处理服务器返回的县级数据
+     * ？？？
      */
     public static boolean handleCountyResponse(String response, int cityId) {
         if (!TextUtils.isEmpty(response)) {
@@ -84,6 +87,7 @@ public class Utility {
 
     /**
      * 将返回的JSON数据解析成Weather实体类
+     * ???
      */
     public static Weather handleWeatherResponse(String response) {
         try {
@@ -96,5 +100,4 @@ public class Utility {
         }
         return null;
     }
-
 }

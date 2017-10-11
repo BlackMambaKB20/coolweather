@@ -21,23 +21,53 @@ import okhttp3.Response;
 
 public class AutoUpdateService extends Service {
 
+    //绑定服务方法  Service中唯一的抽象方法
     @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
 
+    //会在服务第一次创建的时候调用
+    @Override
+    public void onCreate() {
+        super.onCreate();
+    }
+
+    //会在服务销毁的时候调用
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+    //每次服务启动时候调用
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         updateWeather();//更新天气
         updateBingPic();//更新背景图片
         //创建定时任务
         AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        int anHour = 8 * 60 * 60 * 1000; // 这是8小时的毫秒数
+        int anHour = 8 * 60 * 60 * 1000; // 这是8小时的毫秒数  8小时后，AutoUpdateReceiver的onStartCommand方法会重新执行
+                                         //也就 实现了后台定时更新的任务。
         long triggerAtTime = SystemClock.elapsedRealtime() + anHour;
         Intent i = new Intent(this, AutoUpdateService.class);
         PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
-        manager.cancel(pi);
+        manager.cancel(pi);//???
         manager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerAtTime, pi);
+        /*
+        AlarmManager的常用方法有三个：
+       （1）set(int type，long startTime，PendingIntent pi)；该方法用于设置一次性闹钟，
+       第一个参数表示闹钟类型，第二个参数表示闹钟执行时间，第三个参数表示闹钟响应动作。
+       （2）setRepeating(int type，long startTime，long intervalTime，PendingIntent pi)；该方法用于设置重复闹钟
+       第一个参数表示闹钟类型，第二个参数表示闹钟首次执行时间，第三个参数表示闹钟两次执行的间隔时间，第三个参数表示闹钟响应动作。
+       （3）setInexactRepeating（int type，long startTime，long intervalTime，PendingIntent pi）；
+        该方法也用于设置重复闹钟，与第二个方法相似，不过其两个闹钟执行的间隔时间不是固定的而已。
+
+        AlarmManager.ELAPSED_REALTIME表示闹钟在手机睡眠状态下不可用，该状态下闹钟使用相对时间
+        （相对于系统启动开始），状态值为3；
+
+        AlarmManager.ELAPSED_REALTIME_WAKEUP表示闹钟在睡眠状态下会唤醒系统并执行提示功能，
+        该状态下闹钟也使用相对时间，状态值为2；
+        * */
         return super.onStartCommand(intent, flags, startId);
     }
 

@@ -112,7 +112,6 @@ public class WeatherActivity extends AppCompatActivity {
             weatherLayout.setVisibility(View.INVISIBLE);
             requestWeather(mWeatherId);
         }
-        //
         navButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,7 +142,7 @@ public class WeatherActivity extends AppCompatActivity {
      */
     public void requestWeather(final String weatherId) {
         //拼接出接口地址
-        String weatherUrl = "http://guolin.tech/api/weather?cityid=" + weatherId + "&key=bc0418b57b2d4918819d3974ac1285d9";
+        String weatherUrl = "http://guolin.tech/api/weather?cityid=" + weatherId + "&key=06a793684c944f858972fd732dd6d2b5 ";
         HttpUtil.sendOkHttpRequest(weatherUrl, new Callback() {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
@@ -249,6 +248,10 @@ public class WeatherActivity extends AppCompatActivity {
         carWashText.setText(carWash);
         sportText.setText(sport);
         weatherLayout.setVisibility(View.VISIBLE);
+        /*
+        最后启动后台自动跟新天气服务
+        只要一旦选中了某个城市并成功更新天气后，AutoUpdate就会在后台运行，并保证每8小时跟新一次 天气
+        * */
         Intent intent = new Intent(this, AutoUpdateService.class);
         startService(intent);
     }

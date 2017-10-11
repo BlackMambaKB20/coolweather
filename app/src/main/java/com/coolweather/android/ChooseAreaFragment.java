@@ -83,7 +83,7 @@ public class ChooseAreaFragment extends Fragment {
      */
     private int currentLevel;
 
-    //创建Fragment的视图
+    //创建Fragment的视图    为碎片创建视图的时候去调用。
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -96,7 +96,7 @@ public class ChooseAreaFragment extends Fragment {
         return view;
     }
 
-    //当Activity的onCreate方法返回时调用
+    //当Activity的onCreate方法返回时调用  （即：确保与碎片相关联的活动一定已经创建完毕的时候调用）
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -155,8 +155,12 @@ public class ChooseAreaFragment extends Fragment {
             for (Province province : provinceList) {
                 dataList.add(province.getProvinceName());
             }
+            /*
+            notifyDataSetChanged方法通过一个外部的方法控制如果适配器的内容改变时需要强制调用getView
+            来刷新每个Item的内容,可以实现动态的刷新列表的功能。
+            * */
             adapter.notifyDataSetChanged();
-            listView.setSelection(0);
+            listView.setSelection(0);//表示将列表移动到指定的Position处。
             currentLevel = LEVEL_PROVINCE;
         } else {//如果没有查询到  从服务器上查询地址
             String address = "http://guolin.tech/api/china";
@@ -232,7 +236,7 @@ public class ChooseAreaFragment extends Fragment {
                     result = Utility.handleCountyResponse(responseText, selectedCity.getId());
                 }
                 if (result) {
-                    getActivity().runOnUiThread(new Runnable() {
+                    getActivity().runOnUiThread(new Runnable() {//从子线程切换到主线程
                         @Override
                         public void run() {
                             closeProgressDialog();

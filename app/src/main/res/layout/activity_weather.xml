@@ -7,6 +7,8 @@
     <!--
     由于FrameLayout默认情况下会将控件都放置到左上角，因此ScrollView会完全覆盖住ImageView，
     从而ImageView也就成为了背景色
+    使用ScrollView可以允许我们通过滚动的方式去查看屏幕以外的内容
+    因为ScrollView的内部只允许存在一个直接子布局，所以在里面嵌套了一个垂直方向的LinearLayout
     -->
 
     <ImageView
