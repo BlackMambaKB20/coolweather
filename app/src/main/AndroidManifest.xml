@@ -3,7 +3,7 @@
           package="com.coolweather.android">
 
     <uses-permission android:name="android.permission.INTERNET"/>
-    <!--定位功能实现需要的权限-->
+    <!-- 定位功能实现需要的权限 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
@@ -14,11 +14,16 @@
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
-    <!--LitePal使用了一个方法来简化掉Context这个参数，
+    <!--
+    LitePal使用了一个方法来简化掉Context这个参数，
     只需要在AndroidManifest.xml中配置一下LitePalApplication，所有的数据库操作就都不用再传Context了
-    android:name="org.litepal.LitePalApplication"     -->
+    android:name="org.litepal.LitePalApplication"
+
+    android:name="org.litepal.LitePalApplication"
+    -->
     <application
-        android:name="org.litepal.LitePalApplication"
+        android:name=".GlobalApp"
+
         android:allowBackup="true"
         android:icon="@mipmap/logo"
         android:label="@string/app_name"
@@ -27,6 +32,7 @@
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="UAnBit9o7uHBxkAReuFj2fGCd1Ia8nuK"/>
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -42,8 +48,14 @@
             android:enabled="true"
             android:exported="true">
         </service>
-        <service android:name="com.baidu.location.f" android:enabled="true" android:process=":remote">
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote">
         </service>
+
+        <activity android:name="com.coolweather.android.SettingActivity"></activity>
     </application>
+
 
 </manifest>

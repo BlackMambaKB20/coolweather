@@ -7,17 +7,18 @@ import java.io.InputStreamReader;
 
 /**
  * add by syd
+ *
  * 这是一个工具类
  * 1、用于读取全国的省市区的名字和id号  最后用一个字符串存储这些数据
- * 2、
- *
+ * 2、根据城市获取当前的id号
  *
  * String的split方法支持正则表达式；
  * 正则表达式\s表示匹配任何空白字符，+表示匹配一次或多次。
+ * 正则表达式,\\d表示 0-9 的数字,\\s表示 空格,回车,换行等空白符,\\w表示单词字符(数字字母下划线)
  */
-
 public class ReadFileUtill {
 
+    //读取文件内容
     public static StringBuilder ReadTextFile(String filePath){
         StringBuilder builder = new StringBuilder();
         try {
@@ -29,7 +30,7 @@ public class ReadFileUtill {
                 String lineTxt = null;
                 while ((lineTxt = bufferedReader.readLine()) != null) {//按行读取
                     if(!"".equals(lineTxt)){
-                        String [] arr = lineTxt.split("\\s+");
+                        String [] arr = lineTxt.split("\\s+");//"\\s+"
                         builder.append(arr[2]+":"+arr[0]);
 //                System.out.println(arr[2]+":"+arr[0]);
                     }

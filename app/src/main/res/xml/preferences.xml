@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:layout="@layout/preference_item"
+                  android:title="@string/title_activity_setting">
+
+    <PreferenceCategory
+        android:layout="@layout/preference_category_widget"
+        android:title="基本设置">
+        <CheckBoxPreference
+            android:key="@string/automatic_positioning"
+            android:layout="@layout/preference_item"
+            android:summary="每次启动均自动定位"
+            android:title="自动定位"
+            android:widgetLayout="@layout/switch_layout"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:layout="@layout/preference_category_widget"
+        android:title="其他说明">
+        <Preference
+            android:layout="@layout/preference_item"
+            android:summary="V 1.0"
+            android:title="当前版本" />
+        <Preference
+            android:layout="@layout/preference_item"
+            android:title="copyright:孙云栋(syd_sun@qq.com)" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
+
+<!--
+PreferenceScreen preference是偏好。首选的意思，PreferenceScreen个人翻译成 “偏好显示”，明确这个意思就好。
+就是说依据特点灵活的定义显示内容风格，一个屏幕能够包括多个风格，像系统自带的声音设置界面。
+    在项目资源文件里新建xml目录。在里面新建preferences.xml文件.根元素为PreferenceScreen 代表显示一整个屏幕。
+    内部嵌套PreferenceCategory标签，表示偏好类别，在PreferenceCategory标签内部能够随便存放复选框，输入框，列表等显示控件.
+    可包括的控件内容在android.preference包下可查阅.xml文件编写好后。须要载入到activity中，对于偏好显示的xml载入。
+    能够使用PreferenceActivity中的addPreferencesFromResource(),所以Activity须要继承PreferenceActivity.
+    既然显示的屏幕中包括复选框，输入框的控件，我们必定对选择与否，输入框内容感兴趣。我们要如何获取屏幕的内容呢？
+    复写activity中的onPreferenceTreeClick 方法。在对屏幕显示的内容进行操作时，会触发此方法。在方法内部通过调用就可以得到屏幕上输入的内容。
+    与使用SharedPreference对象一样，通过key-value 的形式获取，当中key是xml控件标签中key属性相应的值
+-->

@@ -1,7 +1,9 @@
 package com.coolweather.android;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -10,6 +12,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
@@ -48,11 +51,15 @@ public class MainActivity extends AppCompatActivity {
             String [] permissions = permissionList.toArray(new String[permissionList.size()]);
             ActivityCompat.requestPermissions(MainActivity.this, permissions, 1);//将弹出请求授权对话框
         } else {
-            Toast.makeText(this, "-------------", Toast.LENGTH_SHORT).show();
             requestLocation();
         }
 
-//        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences prefs = this.getSharedPreferences("com.coolweather.android", Context.MODE_PRIVATE);
+        if (prefs.getBoolean("automatic_positioning", false)) {
+            this.FLAG=true;
+        }else {
+            this.FLAG = false;
+        }
 //        if (prefs.getString("weather", null) != null) {
 //            Intent intent = new Intent(this, WeatherActivity.class);
 //            startActivity(intent);
@@ -62,7 +69,9 @@ public class MainActivity extends AppCompatActivity {
     private void requestLocation() {
         initLocation();
         mLocationClient.start();//开始定位(默认情况下该方法只会定位一次)   定位结果会回调到我们前面注册的监听器中
+        Toast.makeText(this, "requestLocation", Toast.LENGTH_SHORT).show();
     }
+
     private void initLocation(){
         LocationClientOption option = new LocationClientOption();
 //        option.setScanSpan(5000);//设置更新的间隔
@@ -121,19 +130,33 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.dynamic, fragment);
         transaction.commit();
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
     @Override
     protected void onResume() {
         super.onResume();
     }
-
     @Override
     protected void onPause() {
         super.onPause();
     }
-
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mLocationClient.stop();//在活动被销毁的时候一定要调用stop方法来停止定位，不然程序会在后台一直定位，严重消耗手机的电量
+        Log.d("TAG", "onDestroy:活动被销毁 ");
     }
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        mLocationClient.start();
+    }
+
 }
